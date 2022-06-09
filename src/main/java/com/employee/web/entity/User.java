@@ -13,23 +13,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
-@Entity
-@Table
-public class User {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "users_tab")
+public class User {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name="uid")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer uid;
-	
-	@Column(name="username", unique = true)
+	@Column
+	private String name;
+	@Column
 	private String username;
-	
-	@Column(name="password")
+	@Column
 	private String password;
-	
-	@Column(name="email")
+	@Column
 	private String email;
+	@Column
+	private String gender;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "roles_tab", joinColumns = @JoinColumn(name = "uid"))
@@ -42,6 +46,14 @@ public class User {
 
 	public void setUid(Integer uid) {
 		this.uid = uid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getUsername() {
@@ -68,6 +80,14 @@ public class User {
 		this.email = email;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public Set<String> getUrole() {
 		return urole;
 	}
@@ -76,20 +96,22 @@ public class User {
 		this.urole = urole;
 	}
 
-	public User(Integer uid, String username, String password, String email, Set<String> urole) {
+	public User(Integer uid, String name, String username, String password, String email, String gender,
+			Set<String> urole) {
 		super();
 		this.uid = uid;
+		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.gender = gender;
 		this.urole = urole;
 	}
 
 	public User() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 	
 }
-

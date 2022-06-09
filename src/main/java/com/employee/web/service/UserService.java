@@ -1,13 +1,12 @@
 package com.employee.web.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
-import org.springframework.security.config.annotation.authentication.ProviderManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.UserDetailsManagerConfigurer.UserDetailsBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.UserDetailsServiceConfigurer;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,34 +16,45 @@ import com.employee.web.entity.User;
 import com.employee.web.repo.UserRepo;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepo userRepo;
-	
+
 	public User saveUser(User user) {
 		return userRepo.save(user);
 	}
-	
-	public List<User> getAllEmployees() {
+
+	public List<User> getAllUsers() {
 		return userRepo.findAll();
-	}
-	
-	public Optional<User> getByUsername(String username){
-		return userRepo.findByUsername(username);
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return null;
+		
+		Optional<User> userOpt = userRepo.findByUsername(username);
+		
+		if(userOpt.isEmpty()) {
+			
+			throw new UsernameNotFoundException(username);
+			
+		}
+		else {
+			
+			User user = userOpt.get();
+			
+			Set<SimpleGrantedAuthority> roleSet = new HashSet<>();
+			
+			for(String role : user.getUrole()) {
+				roleSet.add(new SimpleGrantedAuthority(role));
+			}
+			
+			return new org.springframework.security.core.userdetails.User(
+														user.getUsername(),
+														user.getPassword(),
+														roleSet);
+		}
+		
 	}
-
-//	@Override
-//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//		Optional<User> user = userRepo.findByUsername(username);
-//		UserDetailsBuilder userDetail = new UserDetailsBuilder();
-//		UserDetailsBuilder userBuilder =new UserDetailsBuilder(username,user.get().getPassword(),user.get().getUrole());
-//		return null;
-//	}
 
 }
