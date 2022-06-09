@@ -23,14 +23,9 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService empService;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
 	@GetMapping("/home")
 	public String getHome(Model model) {
-		System.out.println(passwordEncoder.encode(Daylord1));
 		model.addAttribute("username","Peter");
-		
 		return "home";
 	}
 	
