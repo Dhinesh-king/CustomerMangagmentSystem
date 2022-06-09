@@ -56,7 +56,7 @@ public class EmployeeController {
 		return "add-emp-form";
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@GetMapping("/delete/{id}")
 	public String deleteEmp(@PathVariable("id") Integer id, Model model) {
 		
 		String message = empService.deleteEmployeeById(id);
