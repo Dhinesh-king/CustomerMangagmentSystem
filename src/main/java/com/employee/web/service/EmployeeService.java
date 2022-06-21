@@ -18,8 +18,6 @@ public class EmployeeService {
 
 	@Autowired
 	private EmployeeRepository empRepo;
-
-	
 	
 	public Employee saveEmployee(Employee employee) {
 		
@@ -32,7 +30,7 @@ public class EmployeeService {
 	public List<Employee> getAllEmployees() {
 		
 		List<Employee> empList = empRepo.findAll();
-		
+	   
 		return empList;
 	}
 	
@@ -54,6 +52,14 @@ public class EmployeeService {
 		empRepo.deleteById(id);
 		
 		return "Employee data deleted Successfully";
+	}
+
+
+	public List<Employee> getEmployeesByUserName(String username) {
+		
+		List<Employee> emp = empRepo.findByEmail(username);
+		
+		return emp;
 	}
 	
 	

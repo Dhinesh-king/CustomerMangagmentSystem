@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.employee.web.dto.SearchReqDto;
 import com.employee.web.entity.Employee;
 import com.employee.web.entity.User;
 import com.employee.web.service.EmployeeService;
@@ -66,4 +68,13 @@ public class EmployeeController {
 		return "redirect:empdetails";
 	}
 	
+	@PostMapping("/search")
+	public String searchEmployee(SearchReqDto dto, Model model) {
+		
+		List<Employee> empList = empService.getEmployeesByUserName(dto.getUsername());
+		
+		model.addAttribute("empList",empList);
+		
+		return "all-emp";
+	}
 }

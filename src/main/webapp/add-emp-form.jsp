@@ -31,9 +31,9 @@
 		<div class="form-group">
 			<label>Salary</label>
 			<input class="form-input" type="text" name="salary">
-		</div>,
+		</div>
 		
-		<button type="submit">Login</button>
+		<button type="submit">Add</button>
 		<span>${message}</span>
 		
 	</form>
